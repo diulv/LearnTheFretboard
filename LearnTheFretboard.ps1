@@ -2,7 +2,7 @@
 #Process Unicode chars
 $OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-#Get all fretted notes up for standard guitar up to 3
+#Get all fretted notes up for standard guitar up to 22nd fret
 $FrettedNotes = @(
 "6,0,E",
 "6,1,F",
@@ -172,9 +172,6 @@ $ASCIIFretboard = @(
 "6|||---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
 "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯")
 
-
-#$FretObject = $FretObjects | Where-Object {$_.Note -NotMatch "♯"}
-
 while ($true){
 	Clear-Host
 	echo "Ctrl + C to exit"
@@ -184,29 +181,32 @@ while ($true){
 	#Get Random Fret Object
 	$FretObject = $FretObjects | Get-Random
 	
-	
 	#Get Random Fret Object without accidentals
 	#$FretObject = $FretObjects | Where-Object {$_.Note -NotMatch "♯"}
 	
 	#Iterate through ASCIIFretboard
 	for($i = 0; $i -lt 14; $i++){
 		#Is the note on this string?  String number to ASCIIFretboard index is (((String - 1) * 2) + 1)
+		#If so, we'll replace the note location with a hollow circle
 		if( $i -eq (($FretObject.String - 1) * 2) + 1){
-			#If so, update the position in the array
+			#re-initialize fretboard with note
 			$ASCIIFretboardWithNote = ""
+			#Iterate through the, uh, guitar string string and replace the character at the fret.
 			for($j = 0; $j -lt $ASCIIFretboard[$i].length; $j++){
-				#If the Fret = 0, print at string index 2
+				#If the Fret = 0, add the circle at string index 2
 				if(([int]$FretObject.Fret -eq 0) -and ($j -eq 2)){
 					$ASCIIFretboardWithNote += "◯"
 				}
-				#If it's greater than zero, use the formula (Fret * 4) + 1
+				#If it's greater than zero, use the formula (Fret * 4) + 1 and add the fret there instead
 				elseif(([int]$FretObject.Fret -gt 0) -and ($j -eq ([int]$FretObject.Fret * 4 + 1 ))){
 					$ASCIIFretboardWithNote += "◯"
 				}
+				#Otherwise just add the char to the string
 				else{
 					$ASCIIFretboardWithNote += $ASCIIFretboard[$i][$j]
 				}
 			}
+			#Print the string
 			echo $ASCIIFretboardWithNote
 		}	
 		else{
@@ -220,6 +220,7 @@ while ($true){
 	#Wait for input
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 	
+	#Print the note
 	echo $FretObject | ft
 	echo ""
 	echo "Press any key for next note"
