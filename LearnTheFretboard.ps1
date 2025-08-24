@@ -1,4 +1,3 @@
-
 #Allegedly process unicode chars
 $OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
@@ -179,15 +178,16 @@ while ($true){
 	echo ""
 	
 	#Practice Options
+	#------
+	#Filter out accidentals
+	#$FretObjects = $FretObjects | Where-Object {$_.Note -NotMatch "♯"}
 	
-	#Get Random Fret Object
+	#Filter out notes above 12th Fret
+	#$FretObjects = $FretObjects | Where-Object {[int]$_.Fret -lt 12}
+	#------
+	
+	#Get random fret object
 	$FretObject = $FretObjects | Get-Random
-	
-	#Get Random Fret Object without accidentals
-	#$FretObject = $FretObjects | Where-Object {$_.Note -NotMatch "♯"} | Get-Random
-	
-	#Get Random Fret Object below the 12th Fret
-	#$FretObject = $FretObjects | Where-Object {[int]$_.Fret -lt 12} | Get-Random
 	
 	#Iterate through ASCIIFretboard
 	for($i = 0; $i -lt 14; $i++){
@@ -227,7 +227,6 @@ while ($true){
 	
 	#Print the note
 	echo $FretObject | ft
-	echo ""
 	echo "Press any key for next note"
 
 	#Wait for input
