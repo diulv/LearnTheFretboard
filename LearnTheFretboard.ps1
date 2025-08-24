@@ -1,5 +1,5 @@
 
-#Process Unicode chars
+#Allegedly process unicode chars
 $OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 #Get all fretted notes up for standard guitar up to 22nd fret
@@ -178,11 +178,16 @@ while ($true){
 	echo ""
 	echo ""
 	
+	#Practice Options
+	
 	#Get Random Fret Object
 	$FretObject = $FretObjects | Get-Random
 	
 	#Get Random Fret Object without accidentals
-	#$FretObject = $FretObjects | Where-Object {$_.Note -NotMatch "♯"}
+	#$FretObject = $FretObjects | Where-Object {$_.Note -NotMatch "♯"} | Get-Random
+	
+	#Get Random Fret Object below the 12th Fret
+	#$FretObject = $FretObjects | Where-Object {[int]$_.Fret -lt 12} | Get-Random
 	
 	#Iterate through ASCIIFretboard
 	for($i = 0; $i -lt 14; $i++){
